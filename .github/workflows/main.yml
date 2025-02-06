@@ -13,13 +13,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Deploy to PythonAnywhere
-        uses: actions/deploy@v1
+      - name: Set up SSH
+        uses: webfactory/ssh-agent@v0.5.3
         with:
-          pythonanywhere_username: test9386
-          pythonanywhere_api_key: 7191d260d44ce35db65107e081e84edfe5c34fdb
-          project_name: your_project_name
-          virtualenv_name: your_virtualenv_name
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Deploy to PythonAnywhere
+        run: |
+          ssh yourusername@ssh.pythonanywhere.com 'bash ./script.sh'
 
       - name: Check CPU Quota on PythonAnywhere
         run: |
