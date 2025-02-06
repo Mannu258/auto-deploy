@@ -14,9 +14,27 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Deploy to PythonAnywhere
-        uses: py-actions/deploy@v1
+        uses: actions/deploy@v1
         with:
           pythonanywhere_username: test9386
           pythonanywhere_api_key: 7191d260d44ce35db65107e081e84edfe5c34fdb
-          project_name: auto-deploy
-          virtualenv_name: .venv
+          project_name: your_project_name
+          virtualenv_name: your_virtualenv_name
+
+      - name: Check CPU Quota on PythonAnywhere
+        run: |
+          import requests
+
+          username = 'test9386'
+          token = '7191d260d44ce35db65107e081e84edfe5c34fdb'
+
+          response = requests.get(
+              f'https://www.pythonanywhere.com/api/v0/user/{username}/cpu/',
+              headers={'Authorization': f'Token {token}'}
+          )
+
+          if response.status_code == 200:
+              print('CPU quota info:')
+              print(response.content)
+          else:
+              print(f'Got unexpected status code {response.status_code}: {response.content}')
