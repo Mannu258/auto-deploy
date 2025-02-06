@@ -1,0 +1,22 @@
+name: Deploy to PythonAnywhere
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Deploy to PythonAnywhere
+        uses: py-actions/deploy@v1
+        with:
+          pythonanywhere_username: test9386
+          pythonanywhere_api_key: 7191d260d44ce35db65107e081e84edfe5c34fdb
+          project_name: auto-deploy
+          virtualenv_name: .venv
