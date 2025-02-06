@@ -18,12 +18,17 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
+      - name: Make script executable
+        run: |
+          ssh yourusername@ssh.pythonanywhere.com 'chmod +x /home/test9386/auto-deploy/script.sh'
+
       - name: Deploy to PythonAnywhere
         run: |
-          ssh yourusername@ssh.pythonanywhere.com 'bash ./script.sh'
+          ssh yourusername@ssh.pythonanywhere.com 'bash /home/test9386/auto-deploy/script.sh'
 
       - name: Check CPU Quota on PythonAnywhere
         run: |
+          python -c "
           import requests
 
           username = 'test9386'
@@ -31,7 +36,7 @@ jobs:
 
           response = requests.get(
               f'https://www.pythonanywhere.com/api/v0/user/{username}/cpu/',
-              headers={'Authorization': f'Token {token}'}
+              headers={'Authorization': f'Token {token}'
           )
 
           if response.status_code == 200:
@@ -39,3 +44,4 @@ jobs:
               print(response.content)
           else:
               print(f'Got unexpected status code {response.status_code}: {response.content}')
+          "
